@@ -1,0 +1,103 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f3f2ef;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #0a66c2;
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #0a66c2;
+    margin-bottom: 15px;
+}
+
+.form-container {
+    display: flex;
+    margin-bottom: 30px;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px 0 0 4px;
+    font-size: 16px;
+}
+
+button {
+    background-color: #0a66c2;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#fetch-btn {
+    border-radius: 0 4px 4px 0;
+}
+
+#download-btn {
+    border-radius: 4px;
+    margin-top: 15px;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #004182;
+}
+
+.hidden {
+    display: none;
+}
+
+#result-container {
+    margin-top: 30px;
+}
+
+#video-preview-container {
+    margin-bottom: 20px;
+}
+
+#video-preview {
+    width: 100%;
+    border-radius: 4px;
+    background-color: #000;
+}
+
+#loading {
+    text-align: center;
+    margin: 20px 0;
+    font-style: italic;
+    color: #666;
+}
+
+#error-container {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 15px;
+    border-radius: 4px;
+    margin-top: 20px;
+    text-align: center;
+}

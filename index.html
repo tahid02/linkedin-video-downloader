@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Free LinkedIn Video Downloader - Save Videos & Reels Online</title>
+    <meta
+      name="description"
+      content="Download and save LinkedIn videos and reels for free. Easy-to-use online tool with no registration required."
+    />
+    <meta
+      name="keywords"
+      content="free, download, save, LinkedIn, video, reel, online, LinkedIn video downloader, save LinkedIn videos"
+    />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:title" content="Free LinkedIn Video Downloader" />
+    <meta
+      property="og:description"
+      content="Download and save LinkedIn videos and reels online for free."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>LinkedIn Video Downloader</h1>
+      <div class="form-container">
+        <input
+          type="text"
+          id="linkedin-url"
+          placeholder="Enter LinkedIn post URL containing video"
+        />
+        <button id="fetch-btn">Fetch Video</button>
+      </div>
+      <div id="result-container" class="hidden">
+        <div id="video-preview-container">
+          <h2>Video Preview</h2>
+          <video id="video-preview" controls></video>
+        </div>
+        <div id="download-container">
+          <button id="download-btn">Download Video</button>
+        </div>
+      </div>
+      <div id="loading" class="hidden">
+        <p>Processing... Please wait</p>
+      </div>
+      <div id="error-container" class="hidden">
+        <p id="error-message"></p>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
