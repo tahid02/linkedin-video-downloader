@@ -29,14 +29,12 @@ document.addEventListener("DOMContentLoaded", () => {
     loadingElement.classList.remove("hidden");
 
     try {
-      // Use scrape.do API to bypass LinkedIn's protections
-      const scrapeDoToken = "5b7f4c22a13543be9b1446ae31f6880fd0c6c7d28c3";
-      const scrapeDoUrl = `https://api.scrape.do?token=${scrapeDoToken}&url=${encodeURIComponent(
-        linkedinUrl
-      )}`;
+      // Use Zenscrape API to fetch LinkedIn content
+      const zenscrapeApiKey = "538956b0-03f9-11f0-9a86-458355eb20b1";
+      const zenscrapeUrl = `https://app.zenscrape.com/api/v1/get?apikey=${zenscrapeApiKey}&url=${encodeURIComponent(linkedinUrl)}`;
 
-      // Fetch the LinkedIn post HTML content
-      const response = await fetch(scrapeDoUrl);
+      // Fetch the LinkedIn post data
+      const response = await fetch(zenscrapeUrl);
 
       if (!response.ok) {
         throw new Error("Failed to fetch the LinkedIn post");
