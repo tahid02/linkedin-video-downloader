@@ -49,9 +49,39 @@ document.addEventListener("DOMContentLoaded", () => {
         throw new Error("Could not find a video in this LinkedIn post");
       }
 
-      // Set the video source and show the result container
+      // Set the video source
       videoPreview.src = videoUrl;
-      downloadBtn.onclick = () => downloadVideo(videoUrl);
+      
+      // Pre-fetch the video content
+      let videoBlob = null;
+      let blobUrl = null;
+      
+      // Start fetching the video in the background
+      fetch(videoUrl)
+        .then(response => {
+          if (!response.ok) throw new Error("Failed to pre-fetch video");
+          return response.blob();
+        })
+        .then(blob => {
+          videoBlob = blob;
+          blobUrl = URL.createObjectURL(blob);
+          console.log("Video pre-fetched successfully");
+        })
+        .catch(error => {
+          console.error("Error pre-fetching video:", error);
+          // If pre-fetch fails, we'll fall back to regular download
+        });
+      
+      // Set up download button to use pre-fetched content if available
+      downloadBtn.onclick = () => {
+        if (videoBlob && blobUrl) {
+          // If pre-fetched content is available, use it immediately
+          triggerDownload(blobUrl);
+        } else {
+          // Fall back to regular download if pre-fetch failed or isn't complete
+          downloadVideo(videoUrl);
+        }
+      };
 
       loadingElement.classList.add("hidden");
       resultContainer.classList.remove("hidden");
@@ -60,6 +90,54 @@ document.addEventListener("DOMContentLoaded", () => {
       showError(error.message);
     }
   });
+
+  // Function to trigger download using a blob URL
+  function triggerDownload(blobUrl) {
+    const a = document.createElement("a");
+    a.href = blobUrl;
+    a.download = "linkedin-video.mp4";
+    a.style.display = "none";
+
+    // Trigger download
+    document.body.appendChild(a);
+    a.click();
+
+    // Clean up
+    setTimeout(() => {
+      document.body.removeChild(a);
+      // Note: We don't revoke the blob URL here since it might be reused
+    }, 100);
+  }
+
+  // Function to download the video (fallback method)
+  function downloadVideo(videoUrl) {
+    // Show loading indicator while downloading
+    loadingElement.classList.remove("hidden");
+
+    // Fetch the video as a blob
+    fetch(videoUrl)
+      .then((response) => {
+        if (!response.ok) throw new Error("Failed to download video");
+        return response.blob();
+      })
+      .then((blob) => {
+        // Create a blob URL
+        const blobUrl = URL.createObjectURL(blob);
+        
+        // Trigger the download
+        triggerDownload(blobUrl);
+        
+        // Clean up
+        setTimeout(() => {
+          URL.revokeObjectURL(blobUrl);
+          loadingElement.classList.add("hidden");
+        }, 100);
+      })
+      .catch((error) => {
+        loadingElement.classList.add("hidden");
+        showError("Failed to download video: " + error.message);
+      });
+  }
 
   // Function to extract video URL from HTML content
   function extractVideoUrl(htmlContent) {
@@ -80,44 +158,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     return videoUrl;
-  }
-
-  // Function to download the video
-  function downloadVideo(videoUrl) {
-    // Show loading indicator while downloading
-    loadingElement.classList.remove("hidden");
-
-    // Fetch the video as a blob
-    fetch(videoUrl)
-      .then((response) => {
-        if (!response.ok) throw new Error("Failed to download video");
-        return response.blob();
-      })
-      .then((blob) => {
-        // Create a blob URL
-        const blobUrl = URL.createObjectURL(blob);
-
-        // Create download link
-        const a = document.createElement("a");
-        a.href = blobUrl;
-        a.download = "linkedin-video.mp4";
-        a.style.display = "none";
-
-        // Trigger download
-        document.body.appendChild(a);
-        a.click();
-
-        // Clean up
-        setTimeout(() => {
-          document.body.removeChild(a);
-          URL.revokeObjectURL(blobUrl);
-          loadingElement.classList.add("hidden");
-        }, 100);
-      })
-      .catch((error) => {
-        loadingElement.classList.add("hidden");
-        showError("Failed to download video: " + error.message);
-      });
   }
 
   // Function to show error message
